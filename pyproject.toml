@@ -1,0 +1,69 @@
+[project]
+name = "music-video-maker"
+version = "0.1.0"
+description = "Audio-reactive music video creation tool"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "python-multipart>=0.0.20",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    # madmom 0.17.dev0 has cython extensions pinned to the NumPy 1.x C API —
+    # upgrading numpy past 1.26 breaks it, so everything else has to stay
+    # numpy-1-compatible too. opencv-python-headless 4.10 is the last
+    # release that still supports numpy<2.
+    "numpy>=1.26,<2",
+    "opencv-python-headless>=4.10,<4.11",
+    "scipy>=1.14",
+    "librosa>=0.10.2",
+    "soundfile>=0.12",
+    "av>=13.1",
+    "moderngl>=5.12",
+    "ffmpeg-python>=0.2",
+    "diskcache>=5.6",
+    "pillow>=10.4",
+    "watchfiles>=0.24",
+    "websockets>=13.1",
+    "orjson>=3.10",
+    # madmom provides CNN-based onset detection and RNN/DBN beat + downbeat
+    # tracking — the only MIR toolkit with real ML models for these tasks.
+    # The PyPI release doesn't build on Python 3.12 (longintrepr.h removal)
+    # so we pin to the GitHub master commit that's been re-cythonized. Use
+    #   pip install --no-build-isolation -e .
+    # so setup.py can see the cython<3 we install first. See README.
+    "madmom @ git+https://github.com/CPJKU/madmom.git@27f032e8947204902c675e5e341a3faf5dc86dae",
+]
+
+[project.optional-dependencies]
+stems = [
+    "demucs>=4.0.1",
+    "torch>=2.2",
+    "torchaudio>=2.2",
+]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.7",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*"]
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:audioread",
+    "ignore:'(aifc|audioop|sunau)' is deprecated:DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
