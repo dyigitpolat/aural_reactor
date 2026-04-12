@@ -1,4 +1,4 @@
-# Music Video Maker
+# Aural Reactor
 
 Audio-reactive music video creation tool. Drop in an audio track plus a pile of video clips and the app auto-cuts and effects the clips in time with the music. Tune everything through a browser UI.
 
