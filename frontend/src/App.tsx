@@ -161,7 +161,7 @@ export default function App() {
         <MediaBin projectId={projectId} clips={clips} />
 
         <div className="flex flex-col gap-2 min-h-0 min-w-0">
-          <div className="surface rounded-lg px-3 py-2 flex items-center gap-3 text-[11px] text-zinc-400 shrink-0">
+          <div className="relative z-10 surface rounded-lg px-3 py-2 flex items-center gap-3 text-[11px] text-zinc-400 shrink-0">
             <ResolutionPicker
               projectId={projectId}
               width={outputWidth}
